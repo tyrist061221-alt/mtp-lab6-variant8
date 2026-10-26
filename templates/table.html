@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Таблица студентов{% endblock %}
+{% block content %}
+<h1>Таблица данных: студенты</h1>
+<table class="data-table">
+  <thead>
+    <tr>
+      {% for key, label in [('id', '№'), ('name', 'ФИО'), ('group', 'Группа'), ('grade', 'Оценка')] %}
+      <th>
+        <a href="{{ url_for('table', sort=key, order='desc' if (sort == key and not reverse) else 'asc') }}">
+          {{ label }}{% if sort == key %} {{ '▼' if reverse else '▲' }}{% endif %}
+        </a>
+      </th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td>{{ row.id }}</td>
+      <td>{{ row.name }}</td>
+      <td>{{ row.group }}</td>
+      <td class="grade-{{ row.grade }}">{{ row.grade }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">Нет данных</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p class="summary">Записей: {{ rows|length }}. Средняя оценка: {{ '%.2f'|format(average) }}</p>
+{% endblock %}

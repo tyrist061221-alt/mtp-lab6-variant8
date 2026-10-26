@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Заметки{% endblock %}
+{% block content %}
+<h1>Заметки (Flask + SQLite)</h1>
+
+{% if errors %}
+<ul class="errors">
+  {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<form method="post" action="{{ url_for('add') }}" class="note-form">
+  <input type="text" name="title" placeholder="Заголовок" maxlength="100" required>
+  <textarea name="text" placeholder="Текст заметки" rows="3"></textarea>
+  <button type="submit">Добавить</button>
+</form>
+
+{% for note in notes %}
+<article class="note">
+  <h3>{{ note.title }}</h3>
+  <p>{{ note.text }}</p>
+  <small>{{ note.created_at }}</small>
+  <div class="actions">
+    <a href="{{ url_for('edit', note_id=note.id) }}">Изменить</a>
+    <form method="post" action="{{ url_for('delete', note_id=note.id) }}">
+      <button type="submit" class="danger">Удалить</button>
+    </form>
+  </div>
+</article>
+{% else %}
+<p>Заметок пока нет.</p>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Изменить заметку{% endblock %}
+{% block content %}
+<h1>Изменить заметку №{{ note.id }}</h1>
+
+{% if errors %}
+<ul class="errors">
+  {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<form method="post" class="note-form">
+  <input type="text" name="title" value="{{ note.title }}" maxlength="100" required>
+  <textarea name="text" rows="5">{{ note.text }}</textarea>
+  <button type="submit">Сохранить</button>
+  <a href="{{ url_for('index') }}">Отмена</a>
+</form>
+{% endblock %}
